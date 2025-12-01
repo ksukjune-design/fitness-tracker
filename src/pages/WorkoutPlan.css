@@ -93,6 +93,32 @@
   gap: 1rem;
 }
 
+.template-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.template-item {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.template-name {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.template-meta {
+  font-size: 0.85rem;
+  color: #666;
+}
+
 .schedule-day {
   border: 2px solid #e0e0e0;
   border-radius: 12px;
@@ -112,6 +138,79 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.day-add-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.day-select {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.day-empty {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.day-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.day-set-row {
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  padding: 0.5rem 0.75rem;
+  background: #fafafa;
+}
+
+.day-set-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.day-set-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.day-set-type {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.day-set-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.day-set-inputs label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.day-set-inputs input {
+  margin-top: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  font-size: 0.85rem;
+  min-width: 70px;
 }
 
 .exercise-checkbox {
@@ -145,6 +244,10 @@
 
   .schedule-grid {
     grid-template-columns: 1fr;
+  }
+
+  .day-add-row {
+    flex-direction: column;
   }
 }
 

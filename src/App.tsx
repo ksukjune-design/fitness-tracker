@@ -3,6 +3,7 @@ import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import TeamMembers from './pages/TeamMembers'
 import MemberDetail from './pages/MemberDetail'
+import MemberGoals from './pages/MemberGoals'
 import WorkoutPlan from './pages/WorkoutPlan'
 import WorkoutLog from './pages/WorkoutLog'
 import Statistics from './pages/Statistics'
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/members" element={<TeamMembers />} />
           <Route path="/members/:id" element={<MemberDetail />} />
+          <Route path="/members/:id/goals" element={<MemberGoals />} />
           <Route path="/workout-plan/:id" element={<WorkoutPlan />} />
           <Route path="/workout-log/:id" element={<WorkoutLog />} />
           <Route path="/statistics/:id" element={<Statistics />} />

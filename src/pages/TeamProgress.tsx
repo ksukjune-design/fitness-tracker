@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Users, MessageCircle, Heart } from 'lucide-react'
+import { Users, MessageCircle, Heart, ThumbsUp } from 'lucide-react'
 import { storage } from '../utils/storage'
 import { TeamMember, WorkoutLog, Encouragement } from '../types'
 import { format, subDays } from 'date-fns'
@@ -17,7 +17,7 @@ export default function TeamProgress() {
     const allMembers = storage.getMembers()
     const allLogs = storage.getWorkoutLogs()
     const allEncouragements = storage.getEncouragements()
-    
+
     setMembers(allMembers)
     setLogs(allLogs)
     setEncouragements(allEncouragements)
@@ -61,7 +61,23 @@ export default function TeamProgress() {
   }
 
   const getMemberEncouragements = (memberId: string) => {
-    return encouragements.filter(e => e.toMemberId === memberId)
+    return encouragements
+      .filter(e => e.toMemberId === memberId)
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+  }
+
+  const handleLike = (encouragementId: string) => {
+    const target = encouragements.find(e => e.id === encouragementId)
+    if (!target) return
+
+    const updated: Encouragement = {
+      ...target,
+      likes: (target.likes || 0) + 1,
+    }
+
+    const next = encouragements.map(e => (e.id === encouragementId ? updated : e))
+    setEncouragements(next)
+    storage.saveEncouragements(next)
   }
 
   return (
@@ -147,9 +163,19 @@ export default function TeamProgress() {
                         {memberEncouragements.slice(-3).map(enc => (
                           <div key={enc.id} className="encouragement-item">
                             <p>{enc.message}</p>
-                            <span className="encouragement-date">
-                              {format(new Date(enc.createdAt), 'MM/dd')}
-                            </span>
+                            <div className="encouragement-footer">
+                              <span className="encouragement-date">
+                                {format(new Date(enc.createdAt), 'MM/dd')}
+                              </span>
+                              <button
+                                type="button"
+                                className="like-button"
+                                onClick={() => handleLike(enc.id)}
+                              >
+                                <ThumbsUp size={14} />
+                                <span>{enc.likes ?? 0}</span>
+                              </button>
+                            </div>
                           </div>
                         ))}
                       </div>

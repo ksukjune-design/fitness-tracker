@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Users, Activity, TrendingUp, Plus } from 'lucide-react'
 import { storage } from '../utils/storage'
-import { TeamMember } from '../types'
+import { TeamMember, WorkoutLog, Goal, ChallengeParticipation } from '../types'
 import './Dashboard.css'
 
 export default function Dashboard() {
@@ -11,17 +11,36 @@ export default function Dashboard() {
     totalMembers: 0,
     activeWorkouts: 0,
     totalWorkouts: 0,
+    workoutsThisWeek: 0,
+    activeChallenges: 0,
   })
 
   useEffect(() => {
     const allMembers = storage.getMembers()
     const logs = storage.getWorkoutLogs()
-    
+    const goals = storage.getGoals()
+
+    const now = new Date()
+    const startOfWeekDate = new Date(now)
+    startOfWeekDate.setDate(now.getDate() - now.getDay()) // 일요일 기준
+
+    const workoutsThisWeek = logs.filter((log: WorkoutLog) => {
+      const d = new Date(log.date)
+      return d >= startOfWeekDate && d <= now
+    }).length
+
+    const activeChallenges = allMembers.reduce((count, m) => {
+      const participations = (m.challenges || []) as ChallengeParticipation[]
+      return count + participations.filter(p => !p.completed).length
+    }, 0)
+
     setMembers(allMembers)
     setStats({
       totalMembers: allMembers.length,
       activeWorkouts: allMembers.filter(m => m.workoutPlan).length,
       totalWorkouts: logs.length,
+      workoutsThisWeek,
+      activeChallenges,
     })
   }, [])
 
@@ -63,6 +82,26 @@ export default function Dashboard() {
           <div className="stat-content">
             <h3>{stats.totalWorkouts}</h3>
             <p>총 운동 기록</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.12)' }}>
+            <Activity size={24} color="#3b82f6" />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.workoutsThisWeek}</h3>
+            <p>이번 주 운동 횟수</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon" style={{ background: 'rgba(244, 114, 182, 0.12)' }}>
+            <TrendingUp size={24} color="#f973c7" />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.activeChallenges}</h3>
+            <p>진행 중인 챌린지</p>
           </div>
         </div>
       </div>

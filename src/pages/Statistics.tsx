@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Calendar, TrendingUp, Activity } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { storage } from '../utils/storage'
-import { TeamMember, WorkoutLog } from '../types'
+import { TeamMember, WorkoutLog, Goal, ChallengeParticipation } from '../types'
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
 import './Statistics.css'
 
@@ -11,17 +11,24 @@ export default function Statistics() {
   const { id } = useParams<{ id: string }>()
   const [member, setMember] = useState<TeamMember | null>(null)
   const [logs, setLogs] = useState<WorkoutLog[]>([])
+  const [goals, setGoals] = useState<Goal[]>([])
+  const [participations, setParticipations] = useState<ChallengeParticipation[]>([])
   const [period, setPeriod] = useState<'day' | 'week' | 'month'>('week')
 
   useEffect(() => {
-    if (id) {
-      const foundMember = storage.getMember(id)
-      if (foundMember) {
-        setMember(foundMember)
-        const memberLogs = storage.getMemberWorkoutLogs(id)
-        setLogs(memberLogs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()))
-      }
-    }
+    if (!id) return
+
+    const foundMember = storage.getMember(id)
+    if (!foundMember) return
+
+    setMember(foundMember)
+    const memberLogs = storage.getMemberWorkoutLogs(id)
+    setLogs(memberLogs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()))
+
+    const allGoals = storage.getGoals().filter(g => g.memberId === id)
+    setGoals(allGoals)
+
+    setParticipations(foundMember.challenges || [])
   }, [id])
 
   const getChartData = () => {
@@ -74,12 +81,37 @@ export default function Statistics() {
       return logDate >= startDate
     })
 
+    const totalMinutes = filteredLogs.reduce((sum, log) => sum + (log.totalDuration || 0), 0)
+    const totalDays = Math.max(
+      1,
+      Math.ceil(
+        (new Date().getTime() -
+          (filteredLogs[0] ? new Date(filteredLogs[0].date).getTime() : Date.now())) /
+          (1000 * 60 * 60 * 24),
+      ),
+    )
+
+    // 최근 7일 진행률
+    const last7Days = subDays(new Date(), 7)
+    const last7Logs = logs.filter(log => new Date(log.date) >= last7Days)
+    const daysWithWorkout = new Set(last7Logs.map(l => l.date)).size
+    const recentConsistency = Math.round((daysWithWorkout / 7) * 100)
+
+    // 목표 평균 진행률
+    const goalProgress =
+      goals.length > 0
+        ? Math.round(
+            goals.reduce((sum, g) => sum + (g.progress || 0), 0) / goals.length,
+          )
+        : 0
+
     return {
       totalWorkouts: filteredLogs.length,
-      totalDuration: filteredLogs.reduce((sum, log) => sum + (log.totalDuration || 0), 0),
-      avgDuration: filteredLogs.length > 0 
-        ? Math.round(filteredLogs.reduce((sum, log) => sum + (log.totalDuration || 0), 0) / filteredLogs.length)
-        : 0,
+      totalDuration: totalMinutes,
+      avgDuration: filteredLogs.length > 0 ? Math.round(totalMinutes / filteredLogs.length) : 0,
+      avgWeeklyFrequency: Math.round((filteredLogs.length / (totalDays / 7)) * 10) / 10,
+      recentConsistency,
+      goalProgress,
     }
   }
 
@@ -147,7 +179,28 @@ export default function Statistics() {
           <Activity size={24} color="#22c55e" />
           <div>
             <h3>{summary.avgDuration}분</h3>
-            <p>평균 운동 시간</p>
+            <p>평균 1회당 시간</p>
+          </div>
+        </div>
+        <div className="summary-card">
+          <Activity size={24} color="#f97316" />
+          <div>
+            <h3>{summary.avgWeeklyFrequency}회</h3>
+            <p>주간 평균 운동 빈도</p>
+          </div>
+        </div>
+        <div className="summary-card">
+          <Activity size={24} color="#16a34a" />
+          <div>
+            <h3>{summary.recentConsistency}%</h3>
+            <p>최근 7일 출석률</p>
+          </div>
+        </div>
+        <div className="summary-card">
+          <Activity size={24} color="#facc15" />
+          <div>
+            <h3>{summary.goalProgress}%</h3>
+            <p>목표 달성도</p>
           </div>
         </div>
       </div>

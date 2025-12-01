@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, Calendar, Target, Activity, BarChart3 } from 'lucide-react'
+import { ArrowLeft, Calendar, Target, Activity, BarChart3, Flag } from 'lucide-react'
 import { storage } from '../utils/storage'
 import { TeamMember } from '../types'
 import './MemberDetail.css'
@@ -78,6 +78,12 @@ export default function MemberDetail() {
                 {goalLabels[goal]}
               </span>
             ))}
+          </div>
+          <div className="action-buttons" style={{ marginTop: '1rem' }}>
+            <Link to={`/members/${member.id}/goals`} className="btn btn-secondary">
+              <Flag size={18} />
+              목표 & 챌린지 관리
+            </Link>
           </div>
         </div>
 
