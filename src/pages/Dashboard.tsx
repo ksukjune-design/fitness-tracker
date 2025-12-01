@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Users, Activity, TrendingUp, Plus } from 'lucide-react'
 import { storage } from '../utils/storage'
-import { TeamMember, WorkoutLog, Goal, ChallengeParticipation } from '../types'
+import { TeamMember, WorkoutLog, ChallengeParticipation } from '../types'
 import './Dashboard.css'
 
 export default function Dashboard() {
@@ -18,8 +18,6 @@ export default function Dashboard() {
   useEffect(() => {
     const allMembers = storage.getMembers()
     const logs = storage.getWorkoutLogs()
-    const goals = storage.getGoals()
-
     const now = new Date()
     const startOfWeekDate = new Date(now)
     startOfWeekDate.setDate(now.getDate() - now.getDay()) // 일요일 기준

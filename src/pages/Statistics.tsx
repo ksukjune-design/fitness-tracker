@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Calendar, TrendingUp, Activity } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { storage } from '../utils/storage'
-import { TeamMember, WorkoutLog, Goal, ChallengeParticipation } from '../types'
+import { TeamMember, WorkoutLog, Goal } from '../types'
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
 import './Statistics.css'
 
@@ -12,7 +12,6 @@ export default function Statistics() {
   const [member, setMember] = useState<TeamMember | null>(null)
   const [logs, setLogs] = useState<WorkoutLog[]>([])
   const [goals, setGoals] = useState<Goal[]>([])
-  const [participations, setParticipations] = useState<ChallengeParticipation[]>([])
   const [period, setPeriod] = useState<'day' | 'week' | 'month'>('week')
 
   useEffect(() => {
@@ -27,8 +26,6 @@ export default function Statistics() {
 
     const allGoals = storage.getGoals().filter(g => g.memberId === id)
     setGoals(allGoals)
-
-    setParticipations(foundMember.challenges || [])
   }, [id])
 
   const getChartData = () => {

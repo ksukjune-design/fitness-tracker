@@ -22,15 +22,6 @@ export default function WorkoutPlanPage() {
   const [member, setMember] = useState<TeamMember | null>(null)
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | null>(null)
   const [exerciseTemplates, setExerciseTemplates] = useState<ExerciseTemplate[]>([])
-  const [weeklySchedule, setWeeklySchedule] = useState<WeeklySchedule>({
-    monday: [],
-    tuesday: [],
-    wednesday: [],
-    thursday: [],
-    friday: [],
-    saturday: [],
-    sunday: [],
-  })
   const [programByDay, setProgramByDay] = useState<ProgramByDay>({
     monday: [],
     tuesday: [],
@@ -58,7 +49,6 @@ export default function WorkoutPlanPage() {
     if (foundMember.workoutPlan) {
       const plan = foundMember.workoutPlan
       setWorkoutPlan(plan)
-      setWeeklySchedule(plan.weeklySchedule)
 
       // 기존 프로그램 정보가 있으면 세트 구조로 복원
       if (plan.program) {

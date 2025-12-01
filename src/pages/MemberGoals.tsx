@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Target, Flag, Award } from 'lucide-react'
+import { ArrowLeft, Target, Flag } from 'lucide-react'
 import { storage } from '../utils/storage'
 import { TeamMember, Goal, Challenge, ChallengeParticipation } from '../types'
 import './MemberGoals.css'
@@ -118,8 +118,6 @@ export default function MemberGoalsPage() {
     setParticipations(nextList)
     storage.updateMemberChallenges(member.id, nextList)
   }
-
-  const activeParticipations = participations.filter(p => !p.completed)
 
   const goalTypeLabel = (type: Goal['type']) => {
     switch (type) {
