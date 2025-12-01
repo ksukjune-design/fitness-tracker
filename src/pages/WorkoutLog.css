@@ -1,0 +1,193 @@
+.workout-log {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.log-header h2 {
+  font-size: 2rem;
+  color: white;
+}
+
+.log-form {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.mood-selector {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.mood-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.mood-btn:hover {
+  border-color: #667eea;
+}
+
+.mood-btn.active {
+  border-color: #667eea;
+  background: #667eea;
+  color: white;
+}
+
+.mood-excellent.active {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.mood-good.active {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.mood-okay.active {
+  background: #fbbf24;
+  border-color: #fbbf24;
+}
+
+.mood-poor.active {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+
+.exercises-log {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.exercise-log-item {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.exercise-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.exercise-log-header h4 {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.complete-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.complete-btn:hover {
+  border-color: #667eea;
+}
+
+.complete-btn.completed {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: white;
+}
+
+.exercise-log-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-item label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.detail-item input {
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.detail-item input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.empty-text {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+}
+
