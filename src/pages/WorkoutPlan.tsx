@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, Plus, Save, Trash2 } from 'lucide-react'
+import { ArrowLeft, Plus, Save, Trash2, Dumbbell, HeartPulse, Activity, Flame } from 'lucide-react'
 import { storage } from '../utils/storage'
 import {
   TeamMember,
@@ -40,6 +40,7 @@ export default function WorkoutPlanPage() {
     saturday: [],
     sunday: [],
   })
+  const [selectedBodyPart, setSelectedBodyPart] = useState<'all' | ExerciseTemplate['bodyPart']>('all')
 
   useEffect(() => {
     // 운동 카탈로그 로드 (최초 1회 시드 포함)
@@ -214,23 +215,33 @@ export default function WorkoutPlanPage() {
           <div className="section-header">
             <h3>운동 카탈로그</h3>
           </div>
+          <div className="bodypart-filter">
+            {renderBodyPartFilter(selectedBodyPart, setSelectedBodyPart)}
+          </div>
           <div className="template-list">
             {exerciseTemplates.length === 0 ? (
               <p className="empty-text">아직 등록된 운동 템플릿이 없습니다.</p>
             ) : (
-              exerciseTemplates.map(t => (
-                <div key={t.id} className="template-item">
-                  <div className="template-main">
-                    <div>
-                      <p className="template-name">{t.name}</p>
-                      <p className="template-meta">
-                        {t.type === 'strength' ? '근력' : t.type === 'cardio' ? '유산소' : t.type === 'flexibility' ? '유연성' : '균형'} ·{' '}
-                        {t.defaultSets && t.defaultReps ? `${t.defaultSets}세트 x ${t.defaultReps}회` : t.defaultDuration ? `${t.defaultDuration}분` : '세트 미정'}
-                      </p>
+              exerciseTemplates
+                .filter(t => selectedBodyPart === 'all' || t.bodyPart === selectedBodyPart)
+                .map(t => (
+                  <div key={t.id} className="template-item">
+                    <div className="template-main">
+                      <div className="template-icon">{renderTemplateIcon(t.bodyPart)}</div>
+                      <div>
+                        <p className="template-name">{t.name}</p>
+                        <p className="template-meta">
+                          {labelForBodyPart(t.bodyPart)} ·{' '}
+                          {t.defaultSets && t.defaultReps
+                            ? `${t.defaultSets}세트 x ${t.defaultReps}회`
+                            : t.defaultDuration
+                            ? `${t.defaultDuration}분`
+                            : '세트 미정'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
             )}
           </div>
         </div>
@@ -396,5 +407,88 @@ function dayLabel(day: DayKey): string {
     default:
       return '세션'
   }
+}
+
+type BodyPartOption = {
+  key: 'all' | ExerciseTemplate['bodyPart']
+  label: string
+  icon: JSX.Element
+}
+
+const bodyPartOptions: BodyPartOption[] = [
+  { key: 'all', label: '전체', icon: <Activity size={14} /> },
+  { key: 'chest', label: '가슴', icon: <Dumbbell size={14} /> },
+  { key: 'back', label: '등', icon: <Flame size={14} /> },
+  { key: 'legs', label: '하체', icon: <Activity size={14} /> },
+  { key: 'shoulders', label: '어깨', icon: <Dumbbell size={14} /> },
+  { key: 'arms', label: '팔', icon: <Dumbbell size={14} /> },
+  { key: 'core', label: '코어', icon: <Activity size={14} /> },
+  { key: 'cardio', label: '유산소', icon: <HeartPulse size={14} /> },
+  { key: 'full', label: '전신', icon: <Flame size={14} /> },
+]
+
+function renderTemplateIcon(bodyPart: ExerciseTemplate['bodyPart']) {
+  switch (bodyPart) {
+    case 'chest':
+      return <Dumbbell size={18} color="#ef4444" />
+    case 'back':
+      return <Flame size={18} color="#f97316" />
+    case 'legs':
+      return <Activity size={18} color="#22c55e" />
+    case 'shoulders':
+      return <Dumbbell size={18} color="#3b82f6" />
+    case 'arms':
+      return <Dumbbell size={18} color="#a855f7" />
+    case 'core':
+      return <Activity size={18} color="#eab308" />
+    case 'cardio':
+      return <HeartPulse size={18} color="#ec4899" />
+    case 'full':
+    default:
+      return <Flame size={18} color="#f97316" />
+  }
+}
+
+function labelForBodyPart(bodyPart: ExerciseTemplate['bodyPart']) {
+  switch (bodyPart) {
+    case 'chest':
+      return '가슴'
+    case 'back':
+      return '등'
+    case 'legs':
+      return '하체'
+    case 'shoulders':
+      return '어깨'
+    case 'arms':
+      return '팔'
+    case 'core':
+      return '코어'
+    case 'cardio':
+      return '유산소'
+    case 'full':
+    default:
+      return '전신'
+  }
+}
+
+function renderBodyPartFilter(
+  selected: 'all' | ExerciseTemplate['bodyPart'],
+  onSelect: (value: 'all' | ExerciseTemplate['bodyPart']) => void,
+) {
+  return (
+    <div className="bodypart-filter">
+      {bodyPartOptions.map(opt => (
+        <button
+          key={opt.key}
+          type="button"
+          className={`bodypart-chip ${selected === opt.key ? 'active' : ''}`}
+          onClick={() => onSelect(opt.key)}
+        >
+          {opt.icon}
+          <span>{opt.label}</span>
+        </button>
+      ))}
+    </div>
+  )
 }
 

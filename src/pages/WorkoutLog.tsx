@@ -21,15 +21,16 @@ export default function WorkoutLogPage() {
       if (foundMember) {
         setMember(foundMember)
         if (foundMember.workoutPlan?.exercises) {
-          const completedExercises: CompletedExercise[] = foundMember.workoutPlan.exercises.map(ex => ({
-            exerciseId: ex.id,
-            exerciseName: ex.name,
-            sets: ex.sets,
-            reps: ex.reps,
-            duration: ex.duration,
-            weight: ex.weight,
-            completed: false,
-          }))
+          const completedExercises: CompletedExercise[] =
+            foundMember.workoutPlan.exercises.map(ex => ({
+              exerciseId: ex.id,
+              exerciseName: ex.name,
+              sets: ex.defaultSets,
+              reps: ex.defaultReps,
+              duration: ex.defaultDuration,
+              weight: ex.defaultWeight,
+              completed: false,
+            }))
           setExercises(completedExercises)
         }
       }

@@ -216,41 +216,151 @@ export const storage = {
     const data = localStorage.getItem(STORAGE_KEYS.EXERCISE_TEMPLATES)
     if (data) return JSON.parse(data)
 
-    // 최초 1회 기본 템플릿 시드
+    // 최초 1회 기본 템플릿 시드 (부위/머신 기반)
     const seed: ExerciseTemplate[] = [
+      // 가슴
       {
-        id: 'sq_basic_5x5',
-        name: '바벨 스쿼트 5x5',
+        id: 'chest_bench_press',
+        name: '바벨 벤치프레스',
         type: 'strength',
-        defaultSets: 5,
-        defaultReps: 5,
+        bodyPart: 'chest',
+        defaultSets: 4,
+        defaultReps: 8,
+        defaultWeight: 40,
         restTime: 90,
-        notes: 'StrongLifts 5x5 스타일 기본 스쿼트 세트'
+        notes: '가슴 전체를 타겟으로 하는 대표적인 기본 운동',
       },
       {
-        id: 'bp_basic_5x5',
-        name: '벤치프레스 5x5',
+        id: 'chest_incline_db',
+        name: '인클라인 덤벨프레스',
         type: 'strength',
-        defaultSets: 5,
-        defaultReps: 5,
-        restTime: 90
+        bodyPart: 'chest',
+        defaultSets: 3,
+        defaultReps: 10,
+        defaultWeight: 12,
+        restTime: 60,
+        notes: '윗가슴 위주, 어깨 각도 주의',
       },
+      // 등
       {
-        id: 'dl_basic_1x5',
-        name: '데드리프트 1x5',
+        id: 'back_lat_pulldown',
+        name: '랫 풀다운',
         type: 'strength',
-        defaultSets: 1,
-        defaultReps: 5,
-        restTime: 120
+        bodyPart: 'back',
+        defaultSets: 4,
+        defaultReps: 10,
+        restTime: 60,
       },
       {
-        id: 'run_30min',
+        id: 'back_row_machine',
+        name: '시티드 로우 머신',
+        type: 'strength',
+        bodyPart: 'back',
+        defaultSets: 4,
+        defaultReps: 12,
+        restTime: 60,
+      },
+      // 하체
+      {
+        id: 'leg_squat',
+        name: '바벨 스쿼트',
+        type: 'strength',
+        bodyPart: 'legs',
+        defaultSets: 4,
+        defaultReps: 8,
+        restTime: 90,
+      },
+      {
+        id: 'leg_press',
+        name: '레그프레스 머신',
+        type: 'strength',
+        bodyPart: 'legs',
+        defaultSets: 4,
+        defaultReps: 12,
+        restTime: 60,
+      },
+      // 어깨
+      {
+        id: 'shoulder_press',
+        name: '덤벨 숄더프레스',
+        type: 'strength',
+        bodyPart: 'shoulders',
+        defaultSets: 3,
+        defaultReps: 10,
+        restTime: 60,
+      },
+      {
+        id: 'shoulder_side_raise',
+        name: '사이드 레터럴 레이즈',
+        type: 'strength',
+        bodyPart: 'shoulders',
+        defaultSets: 3,
+        defaultReps: 12,
+        restTime: 45,
+      },
+      // 팔
+      {
+        id: 'arm_biceps_curl',
+        name: '덤벨 컬',
+        type: 'strength',
+        bodyPart: 'arms',
+        defaultSets: 3,
+        defaultReps: 12,
+        restTime: 45,
+      },
+      {
+        id: 'arm_triceps_pushdown',
+        name: '케이블 푸시다운',
+        type: 'strength',
+        bodyPart: 'arms',
+        defaultSets: 3,
+        defaultReps: 12,
+        restTime: 45,
+      },
+      // 코어
+      {
+        id: 'core_plank',
+        name: '플랭크',
+        type: 'cardio',
+        bodyPart: 'core',
+        defaultDuration: 45,
+        restTime: 45,
+      },
+      {
+        id: 'core_crunch',
+        name: '크런치',
+        type: 'cardio',
+        bodyPart: 'core',
+        defaultSets: 3,
+        defaultReps: 20,
+        restTime: 45,
+      },
+      // 전신 서킷
+      {
+        id: 'full_burpee',
+        name: '버피 서킷',
+        type: 'cardio',
+        bodyPart: 'full',
+        defaultDuration: 20,
+        restTime: 60,
+      },
+      // 유산소
+      {
+        id: 'cardio_treadmill_30',
         name: '런닝머신 30분',
         type: 'cardio',
+        bodyPart: 'cardio',
         defaultDuration: 30,
-        notes: '가벼운 조깅 또는 빠른 걷기'
-      }
+      },
+      {
+        id: 'cardio_bike_20',
+        name: '실내 자전거 20분',
+        type: 'cardio',
+        bodyPart: 'cardio',
+        defaultDuration: 20,
+      },
     ]
+
     localStorage.setItem(STORAGE_KEYS.EXERCISE_TEMPLATES, JSON.stringify(seed))
     return seed
   },

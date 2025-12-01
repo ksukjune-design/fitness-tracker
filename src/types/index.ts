@@ -45,6 +45,7 @@ export interface ExerciseTemplate {
   id: string
   name: string
   type: 'cardio' | 'strength' | 'flexibility' | 'balance'
+  bodyPart: 'chest' | 'back' | 'legs' | 'shoulders' | 'arms' | 'core' | 'full' | 'cardio'
   defaultSets?: number
   defaultReps?: number
   defaultDuration?: number // minutes
