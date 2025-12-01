@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Plus, Edit, Trash2, UserPlus } from 'lucide-react'
 import { storage } from '../utils/storage'
 import { TeamMember } from '../types'
@@ -8,7 +8,6 @@ import './TeamMembers.css'
 export default function TeamMembers() {
   const [members, setMembers] = useState<TeamMember[]>([])
   const [showAddForm, setShowAddForm] = useState(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
     loadMembers()

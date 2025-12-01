@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Users, TrendingUp, MessageCircle, Heart } from 'lucide-react'
+import { Users, MessageCircle, Heart } from 'lucide-react'
 import { storage } from '../utils/storage'
 import { TeamMember, WorkoutLog, Encouragement } from '../types'
 import { format, subDays } from 'date-fns'

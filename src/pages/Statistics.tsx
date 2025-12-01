@@ -5,7 +5,6 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, L
 import { storage } from '../utils/storage'
 import { TeamMember, WorkoutLog } from '../types'
 import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
-import { ko } from 'date-fns/locale'
 import './Statistics.css'
 
 export default function Statistics() {
@@ -35,11 +34,12 @@ export default function Statistics() {
     if (period === 'day') {
       startDate = subDays(now, 30)
     } else if (period === 'week') {
-      startDate = startOfWeek(subDays(now, 6 * 7), { locale: ko })
-      endDate = endOfWeek(now, { locale: ko })
+      // locale 옵션 없이 기본 설정 사용 (Amplify 빌드 환경에서 타입 호환성 이슈 방지)
+      startDate = startOfWeek(subDays(now, 6 * 7))
+      endDate = endOfWeek(now)
     } else {
-      startDate = startOfMonth(subDays(now, 5), { locale: ko })
-      endDate = endOfMonth(now, { locale: ko })
+      startDate = startOfMonth(subDays(now, 5))
+      endDate = endOfMonth(now)
     }
 
     const days = eachDayOfInterval({ start: startDate, end: endDate })
@@ -66,9 +66,9 @@ export default function Statistics() {
       if (period === 'day') {
         startDate = subDays(now, 30)
       } else if (period === 'week') {
-        startDate = startOfWeek(subDays(now, 6 * 7), { locale: ko })
+        startDate = startOfWeek(subDays(now, 6 * 7))
       } else {
-        startDate = startOfMonth(subDays(now, 5), { locale: ko })
+        startDate = startOfMonth(subDays(now, 5))
       }
 
       return logDate >= startDate
