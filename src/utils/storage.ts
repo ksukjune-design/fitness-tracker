@@ -169,7 +169,12 @@ export const storage = {
         targetFrequencyPerWeek: 7,
         type: 'team',
         createdAt: new Date().toISOString(),
-      },\n    ]\n\n    localStorage.setItem(STORAGE_KEYS.CHALLENGES, JSON.stringify(seed))\n    return seed\n  },
+      },
+    ]
+
+    localStorage.setItem(STORAGE_KEYS.CHALLENGES, JSON.stringify(seed))
+    return seed
+  },
 
   saveChallenges: (challenges: Challenge[]): void => {
     localStorage.setItem(STORAGE_KEYS.CHALLENGES, JSON.stringify(challenges))
